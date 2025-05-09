@@ -1,0 +1,15 @@
+{
+    "name": "Terraform Development Environment",
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "features": {
+        "ghcr.io/hashicorp/terraform:1": {},
+        "ghcr.io/tflint-dev/tflint/tflint:latest": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "hashicorp.terraform"
+            ]
+        }
+    }
+}
