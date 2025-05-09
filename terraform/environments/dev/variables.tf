@@ -1,0 +1,1 @@
+#  No variables need to be defined here, as they are defined in the parent variables.tf

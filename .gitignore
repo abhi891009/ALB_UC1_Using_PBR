@@ -1,0 +1,14 @@
+# Terraform files
+.terraform
+*.tfstate
+*.tfstate.*
+crash.log
+
+# Environment-specific variable files (keep the example)
+terraform.tfvars
+environments/*/terraform.tfvars
+
+# Local IDE or OS files (optional but recommended)
+.DS_Store
+.vscode/
+.idea/
