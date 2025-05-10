@@ -34,19 +34,19 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Initialize Terraform
-        run: terraform init -chdir=terraform_folder/environments/dev
+        run: terraform init -chdir=terraform/environments/dev
 
       - name: Format Terraform Code
-        run: terraform fmt -check -chdir=terraform_folder/environments/dev
+        run: terraform fmt -check -chdir=terraform/environments/dev
 
       - name: Validate Terraform Code
-        run: terraform validate -chdir=terraform_folder/environments/dev
+        run: terraform validate -chdir=terraform/environments/dev
 
       - name: Run TFLint
-        run: tflint -chdir=terraform_folder/environments/dev
+        run: tflint -chdir=terraform/environments/dev
 
       - name: Plan Terraform Changes
-        run: terraform plan -chdir=terraform_folder/environments/dev -out=tfplan
+        run: terraform plan -chdir=terraform/environments/dev -out=tfplan
 
       - name: Apply Terraform Changes
-        run: terraform apply -chdir=terraform_folder/environments/dev -auto-approve
+        run: terraform apply -chdir=terraform/environments/dev -auto-approve
