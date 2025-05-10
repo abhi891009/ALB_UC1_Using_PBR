@@ -1,0 +1,52 @@
+name: Terraform Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: Terraform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.5"
+
+      - name: Install TFLint
+        run: |
+          curl -sSfL https://github.com/tflint-dev/tflint/releases/download/v0.49.0/tflint_linux_amd64.zip -o tflint.zip
+          unzip tflint.zip
+          sudo mv tflint /usr/local/bin/
+          tflint --version
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Initialize Terraform
+        run: terraform init -chdir=terraform_folder/environments/dev
+
+      - name: Format Terraform Code
+        run: terraform fmt -check -chdir=terraform_folder/environments/dev
+
+      - name: Validate Terraform Code
+        run: terraform validate -chdir=terraform_folder/environments/dev
+
+      - name: Run TFLint
+        run: tflint -chdir=terraform_folder/environments/dev
+
+      - name: Plan Terraform Changes
+        run: terraform plan -chdir=terraform_folder/environments/dev -out=tfplan
+
+      - name: Apply Terraform Changes
+        run: terraform apply -chdir=terraform_folder/environments/dev -auto-approve
